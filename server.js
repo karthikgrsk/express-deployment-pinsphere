@@ -9,30 +9,16 @@ const app = express();
 // Connect to Database
 connectDB();
 
-
-// CORS configuration
-const allowedOrigins = [
-  'http://localhost:5173',
-  "https://pin-sphere.vercel.app",
-  "https://pin-sphere-uw75.vercel.app"
-].filter(Boolean);
-
+// Simple CORS Fix
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
+  origin: true,
   credentials: true
 }));
 
 // Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 // Serve uploads locally if not using Cloudinary (fallback)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
